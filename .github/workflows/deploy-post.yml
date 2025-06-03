@@ -1,0 +1,42 @@
+name: deploy-post
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: yarn install
+        run: yarn
+        working-directory: ./services/blog.creco.dev-post
+
+      - name: yarn build
+        run: |
+          yarn build
+        working-directory: ./services/blog.creco.dev-post
+
+      - name: deploy to public storage
+        run: |
+          rm -rf public-storage
+          git clone https://$CRECO_STORAGE@github.com/creco-storage/public-storage.git
+          
+          cd public-storage
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -rf ./blog.creco.dev/post-test
+          mv ../out ./blog.creco.dev/post-test
+          git add -A
+          git -c core.hookspath=/dev/null commit -m "$(git log -1 --pretty=%B)"
+          git push origin HEAD
+        env:
+          CRECO_STORAGE: ${{ secrets.CRECO_STORAGE }}

@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   output: process.env.LOCAL === 'true' ? undefined : "export",
-  basePath: "/post",
+  basePath: "/post-test",
 
   rewrites: process.env.LOCAL === 'true' ? async () => {
     return [
