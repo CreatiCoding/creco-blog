@@ -19,6 +19,11 @@ export const PostPage = (props: {
 
     useEffect(() => {
         fetch(`/github-api/api/gist/blog-post/${id}`).then(res => res.json()).then(async ({ data }) => {
+            if (data == null) {
+                window.location.href = '/post/404';
+                return;
+            }
+
             data.body.markdown = await getMarkdown(data.body.contents);
             const parsed = parsePost(data);
             if (parsed == null) {
@@ -29,6 +34,9 @@ export const PostPage = (props: {
             setCategory(category);
             setTitle(title);
             setBody(body);
+        }).catch(error => {
+            console.error(error);
+            window.location.href = '/post/404';
         });
     }, [id]);
 
