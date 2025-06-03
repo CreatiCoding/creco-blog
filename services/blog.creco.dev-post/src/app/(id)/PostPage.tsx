@@ -21,7 +21,7 @@ export const PostPage = (props: { id?: string }) => {
                     <div className="max-w-[840px] mx-auto">
                         {/* 상단 로고 */}
                         <div className="py-[24px]">
-                            <Link href="/post/" className="hover:text-white">
+                            <Link href="/" className="hover:text-white">
                                 <h1 className="text-[3.6rem] font-extrabold">Creco&apos;s Blog</h1>
                             </Link>
                         </div>
