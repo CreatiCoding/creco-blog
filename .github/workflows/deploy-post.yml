@@ -36,8 +36,8 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          rm -rf ./blog.creco.dev/post-test
-          mv ../out ./blog.creco.dev/post-test
+          rm -rf ./blog.creco.dev/post
+          mv ../out ./blog.creco.dev/post
           git add -A
           git -c core.hookspath=/dev/null commit -m "$(git log -1 --pretty=%B)"
           git push origin HEAD

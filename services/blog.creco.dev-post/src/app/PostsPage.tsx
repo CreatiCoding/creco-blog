@@ -45,7 +45,7 @@ export const PostsPage = () => {
               {posts.map((post) => (
                 <li key={post.id} className="w-full border-b border-gray-200/50 py-12">
                   <a
-                    href={`/post-test/${post.id}/`}
+                    href={`/post/${post.id}/`}
                     className="hover:underline text-[1.6rem]"
                   >
                     <time className="text-gray-500">{post.date}</time>
