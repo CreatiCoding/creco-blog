@@ -16,5 +16,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function () {
-    return <PostPage id={"91eb16f6-5424-48ca-a663-8f329d7b297a"} />;
+    return <PostPage id={"$ID"} />;
 }
