@@ -16,7 +16,7 @@ export const PostPage = (props: { id?: string }) => {
         <div className="bg-[#232323] min-h-screen text-[#DEDEDD] text-base">
             {/* 데스크탑 전용 컨테이너 */}
             <div className="desktop-ui flex justify-center bg-[#232323] min-h-screen text-[#DEDEDD] text-base">
-                <div className="bg-[#2B2B29] max-w-[1200px] w-full py-[16px] px-[64px] shadow-[0_0_4px_20px_#2B2B29] text-base">
+                <div className="bg-[#2B2B29] max-w-[1200px] w-full py-[16px] px-[20px] shadow-[0_0_4px_20px_#2B2B29] text-base">
                     <div className="max-w-[840px] mx-auto">
                         {/* 상단 로고 */}
                         <div className="py-[24px]">
@@ -33,7 +33,7 @@ export const PostPage = (props: { id?: string }) => {
                         <div className="h-[20px]" />
 
                         {/* 제목 */}
-                        <h1 className="text-[48px] text-center underline break-normal">
+                        <h1 className="text-[48px] text-center underline break-keep">
                             {title}
                         </h1>
                         <div className="h-[20px]" />
