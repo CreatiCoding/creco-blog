@@ -41,5 +41,6 @@ jobs:
           git add -A
           git -c core.hookspath=/dev/null commit -m "$(git log -1 --pretty=%B)"
           git push origin HEAD
+        working-directory: ./services/blog.creco.dev-post
         env:
           CRECO_STORAGE: ${{ secrets.CRECO_STORAGE }}
