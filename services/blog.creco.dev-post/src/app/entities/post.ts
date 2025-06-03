@@ -30,7 +30,7 @@ function formattedDate(date: Date) {
 
 export function parsePost(post: Item) {
     if (post == null) {
-        return {};
+        return null;
     }
 
     const details = post;

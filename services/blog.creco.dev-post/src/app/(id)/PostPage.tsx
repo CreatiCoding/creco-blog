@@ -1,17 +1,36 @@
 'use client';
 
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, useEffect, useState } from "react";
 import Giscus from '@giscus/react';
 import styles from './PostPage.module.css';
-import { parsePost } from "../entities/post";
-import { usePost } from "../entities/hooks/post";
-import { useParams } from "next/navigation";
 import Link from "next/link";
+import { getMarkdown, parsePost } from "../entities/post";
 
-export const PostPage = (props: { id?: string }) => {
-    const id = props.id ?? useParams().id;
-    const freshData = usePost(id as string);
-    const { category, title, body } = parsePost(freshData!);
+export const PostPage = (props: {
+    id: string;
+    category: string;
+    title: string;
+    body: string;
+}) => {
+    const { id, category: defaultCategory, title: defaultTitle, body: defaultBody } = props;
+    const [category, setCategory] = useState(defaultCategory);
+    const [title, setTitle] = useState(defaultTitle);
+    const [body, setBody] = useState(defaultBody);
+
+    useEffect(() => {
+        fetch(`/github-api/api/gist/blog-post/${id}`).then(res => res.json()).then(async ({ data }) => {
+            data.body.markdown = await getMarkdown(data.body.contents);
+            const parsed = parsePost(data);
+            if (parsed == null) {
+                return;
+            }
+
+            const { category, title, body } = parsed;
+            setCategory(category);
+            setTitle(title);
+            setBody(body);
+        });
+    }, [id]);
 
     return (
         <div className="bg-[#232323] min-h-screen text-[#DEDEDD] text-base">

@@ -1,11 +1,13 @@
 import { Metadata } from "next";
 import { PostPage } from "../../PostPage";
-import { parsePost } from "@/app/entities/post";
+
+const id = "$ID";
+const category = "$CATEGORY";
+const title = "$TITLE";
+const body = "$BODY";
+const thumbnail = $THUMBNAIL;
 
 export async function generateMetadata(): Promise<Metadata> {
-    const { data: freshData} = await fetch('https://blog.creco.dev/github-api/api/gist/blog-post/$ID').then(res => res.json());
-    const { title, body, thumbnail } = parsePost(freshData!);
-
     return {
         title: title,
         description: body ? body.split('\n').slice(0, 10).join('\n') : undefined,
@@ -16,5 +18,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function () {
-    return <PostPage id={"$ID"} />;
+    return <PostPage id={id} category={category} title={title} body={body} />;
 }
