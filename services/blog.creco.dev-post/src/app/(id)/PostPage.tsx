@@ -3,7 +3,8 @@
 import React, { HTMLAttributes } from "react";
 import Giscus from '@giscus/react';
 import styles from './PostPage.module.css';
-import { parsePost, usePost } from "../entities/post";
+import { parsePost } from "../entities/post";
+import { usePost } from "../entities/hooks/post";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 

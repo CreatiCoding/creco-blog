@@ -1,5 +1,20 @@
+import { Metadata } from "next";
 import { PostPage } from "../../PostPage";
+import { parsePost } from "@/app/entities/post";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const { data: freshData} = await fetch('https://blog.creco.dev/github-api/api/gist/blog-post/$ID').then(res => res.json());
+    const { title, body, thumbnail } = parsePost(freshData!);
+
+    return {
+        title: title,
+        description: body ? body.split('\n').slice(0, 10).join('\n') : undefined,
+        openGraph: {
+            images: thumbnail ? [thumbnail] : [],
+        },
+    }
+}
 
 export default function () {
-    return <PostPage id={"$ID"} />;
+    return <PostPage id={"91eb16f6-5424-48ca-a663-8f329d7b297a"} />;
 }

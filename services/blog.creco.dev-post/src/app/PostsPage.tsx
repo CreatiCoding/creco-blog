@@ -1,7 +1,7 @@
 'use client';
 
 import React from "react";
-import { usePosts } from "./entities/post";
+import { usePosts } from "./entities/hooks/post";
 
 export const PostsPage = () => {
   const posts = usePosts();
