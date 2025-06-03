@@ -44,6 +44,8 @@
 
 .post>p {
     line-height: 1.6;
+    text-align: justify;
+    text-indent: 16px;
 }
 
 .post code {
