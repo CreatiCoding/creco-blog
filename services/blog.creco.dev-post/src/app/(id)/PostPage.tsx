@@ -7,8 +7,8 @@ import { parsePost, usePost } from "../entities/post";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
-export const PostPage = () => {
-    const id = useParams().id;
+export const PostPage = (props: { id?: string }) => {
+    const id = props.id ?? useParams().id;
     const freshData = usePost(id as string);
     const { category, title, body } = parsePost(freshData!);
 
