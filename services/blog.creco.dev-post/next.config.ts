@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { SentryBuildOptions, withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -32,4 +33,22 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+function withPlugins(config: NextConfig) {
+  const plugins = [{
+    plugin: withSentryConfig,
+    options: {
+      org: "creco-org",
+      project: "blog-creco-dev-post",
+      silent: !process.env.CI,
+      disableLogger: true,
+    } as SentryBuildOptions,
+  }];
+
+  for (const { options, plugin } of plugins) {
+    config = plugin(config, options);
+  }
+
+  return config;
+}
+
+export default withPlugins(nextConfig);
