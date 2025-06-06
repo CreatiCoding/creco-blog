@@ -37,7 +37,7 @@ function withPlugins(config: NextConfig) {
   const plugins = [{
     plugin: withSentryConfig,
     options: {
-      org: "creco-org",
+      org: "creco-9n",
       project: "blog-creco-dev-post",
       silent: !process.env.CI,
       disableLogger: true,
