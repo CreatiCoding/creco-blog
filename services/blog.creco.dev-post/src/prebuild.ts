@@ -2,7 +2,7 @@
 
 import axios, { isAxiosError } from "axios";
 import { parsePost } from "./app/entities/post";
-import { counterApi } from "./app/share/counterApi";
+import { COUNTER_API_PATH, counterApi } from "./app/share/counterApi";
 
 const fs = require('fs');
 const prebuildTargetDir = './src/app/(id)/(prebuild)';
@@ -79,7 +79,7 @@ const pageTempateContent = fs.readFileSync('./src/app/(id)/page.template', 'utf-
     // ];
     // for (const { id, count } of list) {
     //     await counterApi.setCounter('blog-post-view-count', id, count);
-    //     console.log(`${id} ${count}`);
+    //     console.log(`${COUNTER_API_PATH({ name: 'blog-post-view-count', id })} ${count}`);
     //     await new Promise(resolve => setTimeout(resolve, 3000));
     // }
 })();

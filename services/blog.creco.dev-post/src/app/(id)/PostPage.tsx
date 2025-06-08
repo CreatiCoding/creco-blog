@@ -63,17 +63,6 @@ function PostViewCountBadge({ id, className }: { id: string, className?: string 
     </Badge>
 }
 
-const useViewFirstTodayCountUp = (id: string) => {
-    useAsyncEffect(async () => {
-        const today = new Date().toISOString().split('T')[0];
-        const lastDateViewed = localStorage.getItem(`blog-post-view-count-${id}-view-date`);
-        if (lastDateViewed == null || lastDateViewed != today) {
-            await counterApi.upCounter('blog-post-view-count', id);
-            localStorage.setItem(`blog-post-view-count-${id}-view-date`, today);
-        }
-    }, [id]);
-}
-
 export const PostPage = (props: {
     id: string;
     category: string;
@@ -84,8 +73,6 @@ export const PostPage = (props: {
     const [category, setCategory] = useState(defaultCategory);
     const [title, setTitle] = useState(defaultTitle);
     const [body, setBody] = useState(defaultBody);
-
-    useViewFirstTodayCountUp(id);
 
     useEffect(() => {
         fetch(`/github-api/api/gist/blog-post/${id}`).then(res => res.json()).then(async ({ data }) => {

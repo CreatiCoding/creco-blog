@@ -20,21 +20,25 @@ const COUNTER_NAMESPACE = () => {
     return `creco-blog-${typeof window !== 'undefined' ? `${window.location.hostname}` : 'blog.creco.dev'}`;
 }
 
-const COUNTER_API_PATH = ({ name, id }: { name: string, id: string }) => {
-    return `${BASE_URL}/${COUNTER_NAMESPACE()}-${name}-${id}`;
+export const COUNTER_API_PATH = ({ name, id, postfix }: { name: string, id: string, postfix?: string }) => {
+    return `${BASE_URL}/${COUNTER_NAMESPACE()}${postfix ?? ''}-${name}-${id}`;
 }
 
 export const counterApi = {
     getCounter: async (name: string, id: string) => {
-        return await client.get(COUNTER_API_PATH({ name, id }));
+        const isLocalHost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+        const postfix = isLocalHost ? '-localhost' : '';
+        return await client.get(COUNTER_API_PATH({ name, id, postfix }));
     },
     upCounter: async (name: string, id: string) => {
         const isLocalHost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
-        return await client.get(`${isLocalHost ? 'localhost-' : ''}${COUNTER_API_PATH({ name, id })}/up`);
+        const postfix = isLocalHost ? '-localhost' : '';
+        return await client.get(`${COUNTER_API_PATH({ name, id, postfix })}/up`);
     },
     setCounter: async (name: string, id: string, count: number) => {
         const isLocalHost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
-        return await client.get(`${isLocalHost ? 'localhost-' : ''}${COUNTER_API_PATH({ name, id })}/set?count=${count}`);
+        const postfix = isLocalHost ? '-localhost' : '';
+        return await client.get(`${COUNTER_API_PATH({ name, id, postfix })}/set?count=${count}`);
     }
 }
 
