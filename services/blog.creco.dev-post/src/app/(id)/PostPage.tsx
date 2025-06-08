@@ -5,6 +5,74 @@ import Giscus from '@giscus/react';
 import styles from './PostPage.module.css';
 import Link from "next/link";
 import { getMarkdown, parsePost } from "../entities/post";
+import { counterApi } from "../share/counterApi";
+import { isAxiosError } from "axios";
+import { useAsyncEffect } from "react-simplikit";
+import { useQuery } from "@tanstack/react-query";
+
+const useViewCountInitialize = (id: string) => {
+    useAsyncEffect(async () => {
+        try {
+            await counterApi.getCounter('blog-post-view-count', id);
+            console.log('already initialized.')
+        } catch (error) {
+            if (isAxiosError(error) && error?.response?.data.message === 'record not found') {
+                await counterApi.setCounter('blog-post-view-count', id, 1);
+                console.log('initialized success.')
+            }
+        }
+    }, [id]);
+}
+
+function Badge({ children, className }: { children: React.ReactNode, className?: string }) {
+    return <span className={`bg-[#232323] text-[#DEDEDD] text-base px-[10px] py-[5px] rounded-md flex ${className}`}>{children}</span>
+}
+
+function PostViewCountBadge({ id, className }: { id: string, className?: string }) {
+    useViewCountInitialize(id);
+
+    const { data, error, isLoading } = useQuery({
+        queryKey: ['view-count', id],
+        queryFn: () => counterApi.getCounter('blog-post-view-count', id),
+        // 재시도 하지 않음
+        retry: false,
+
+        // 포커스나 재접속 시 자동 리패치 하지 않음
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+
+        // 컴포넌트가 마운트될 때만(fetch할 때만) 실행
+        // (기본값: stale 상태라면 마운트 시 재실행)
+        refetchOnMount: false,
+
+        // 데이터가 절대 stale 상태가 아니도록 설정
+        // → 한 번 성공하면 무한정 “신선”하다고 간주
+        staleTime: Infinity,
+
+        // 캐시도 남겨두어 재마운트 시 데이터를 재사용
+        // → 말 그대로 “캐시 없음”을 원하시면 0 으로 설정하세요.
+        cacheTime: Infinity,
+    });
+
+
+    const count = isLoading || error != null ? '...' : data?.data.count;
+
+    return <Badge className={className}>
+        <span>조회수</span>
+        <span className="mr-0 ml-auto">{count}</span>
+    </Badge>
+}
+
+const useViewFirstTodayCountUp = (id: string) => {
+    useAsyncEffect(async () => {
+        const today = new Date().toISOString().split('T')[0];
+        const lastDateViewed = localStorage.getItem(`blog-post-view-count-${id}-view-date`);
+        if (lastDateViewed == null || lastDateViewed != today) {
+            await counterApi.upCounter('blog-post-view-count', id);
+            localStorage.setItem(`blog-post-view-count-${id}-view-date`, today);
+        }
+    }, [id]);
+}
 
 export const PostPage = (props: {
     id: string;
@@ -16,6 +84,8 @@ export const PostPage = (props: {
     const [category, setCategory] = useState(defaultCategory);
     const [title, setTitle] = useState(defaultTitle);
     const [body, setBody] = useState(defaultBody);
+
+    useViewFirstTodayCountUp(id);
 
     useEffect(() => {
         fetch(`/github-api/api/gist/blog-post/${id}`).then(res => res.json()).then(async ({ data }) => {
@@ -64,6 +134,10 @@ export const PostPage = (props: {
                         <h1 className="text-[48px] text-center underline break-keep">
                             {title}
                         </h1>
+
+                        <div className="flex">
+                            <PostViewCountBadge id={id} className="mr-0 ml-auto w-[75px]" />
+                        </div>
                         <div className="h-[20px]" />
 
                         {/* 구분선 */}

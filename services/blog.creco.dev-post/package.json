@@ -6,7 +6,8 @@
     "dev": "LOCAL=true next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prebuild": "yarn dlx tsx ./src/prebuild.ts"
   },
   "dependencies": {
     "@divops-packages/blog-creco-dev": "^0.5.2",
@@ -21,7 +22,6 @@
     "axios": "^1.4.0",
     "counterapi": "^1.147.0",
     "next": "15.3.3",
-    "qs": "^6.14.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-simplikit": "^0.0.37"
@@ -31,7 +31,6 @@
     "@next/eslint-plugin-next": "15.3.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/qs": "^6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
