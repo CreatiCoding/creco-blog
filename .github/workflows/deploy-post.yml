@@ -26,6 +26,9 @@ jobs:
           yarn prebuild
           yarn build
           yarn postbuild
+          cp ./public/sitemap.xml ./out/sitemap.xml
+          cp ./public/sitemap-0.xml ./out/sitemap-0.xml
+          cp ./public/robots.txt ./out/robots.txt
         working-directory: ./services/blog.creco.dev-post
         env:
           GA4_GOOGLE_PRIVATE_KEY: ${{ secrets.GA4_GOOGLE_PRIVATE_KEY }}
