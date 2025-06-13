@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prebuild": "yarn tsx ./src/scripts/prebuild.ts",
+    "postbuild": "next-sitemap",
     "top": "yarn tsx ./src/scripts/top.ts"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "@toss/utils": "^1.6.1",
     "axios": "^1.4.0",
     "next": "15.3.3",
+    "next-sitemap": "^4.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-simplikit": "^0.0.37"

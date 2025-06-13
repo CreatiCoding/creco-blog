@@ -131,3 +131,7 @@ dist
 
 **/(prebuild)/**/*.tsx
 !**/(prebuild)/**/not-found/page.tsx
+
+sitemap.xml
+sitemap-0.xml
+robots.txt

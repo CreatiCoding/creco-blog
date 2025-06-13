@@ -25,6 +25,7 @@ jobs:
         run: |
           yarn prebuild
           yarn build
+          yarn postbuild
         working-directory: ./services/blog.creco.dev-post
         env:
           GA4_GOOGLE_PRIVATE_KEY: ${{ secrets.GA4_GOOGLE_PRIVATE_KEY }}
