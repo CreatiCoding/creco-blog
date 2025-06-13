@@ -44,3 +44,5 @@ jobs:
         working-directory: ./services/blog.creco.dev-post
         env:
           CRECO_STORAGE: ${{ secrets.CRECO_STORAGE }}
+          GA4_GOOGLE_PRIVATE_KEY: ${{ secrets.GA4_GOOGLE_PRIVATE_KEY }}
+          GA4_GOOGLE_CLIENT_EMAIL: ${{ secrets.GA4_GOOGLE_CLIENT_EMAIL }}
