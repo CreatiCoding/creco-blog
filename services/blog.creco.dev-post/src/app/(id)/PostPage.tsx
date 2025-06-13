@@ -5,61 +5,15 @@ import Giscus from '@giscus/react';
 import styles from './PostPage.module.css';
 import Link from "next/link";
 import { getMarkdown, parsePost } from "../entities/post";
-import { counterApi } from "../share/counterApi";
-import { isAxiosError } from "axios";
-import { useAsyncEffect } from "react-simplikit";
-import { useQuery } from "@tanstack/react-query";
-
-const useViewCountInitialize = (id: string) => {
-    useAsyncEffect(async () => {
-        try {
-            await counterApi.getCounter('blog-post-view-count', id);
-            console.log('already initialized.')
-        } catch (error) {
-            if (isAxiosError(error) && error?.response?.data.message === 'record not found') {
-                await counterApi.setCounter('blog-post-view-count', id, 1);
-                console.log('initialized success.')
-            }
-        }
-    }, [id]);
-}
 
 function Badge({ children, className }: { children: React.ReactNode, className?: string }) {
     return <span className={`bg-[#232323] text-[#DEDEDD] text-base px-[10px] py-[5px] rounded-md flex ${className}`}>{children}</span>
 }
 
-function PostViewCountBadge({ id, className }: { id: string, className?: string }) {
-    useViewCountInitialize(id);
-
-    const { data, error, isLoading } = useQuery({
-        queryKey: ['view-count', id],
-        queryFn: () => counterApi.getCounter('blog-post-view-count', id),
-        // 재시도 하지 않음
-        retry: false,
-
-        // 포커스나 재접속 시 자동 리패치 하지 않음
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-
-        // 컴포넌트가 마운트될 때만(fetch할 때만) 실행
-        // (기본값: stale 상태라면 마운트 시 재실행)
-        refetchOnMount: false,
-
-        // 데이터가 절대 stale 상태가 아니도록 설정
-        // → 한 번 성공하면 무한정 “신선”하다고 간주
-        staleTime: Infinity,
-
-        // 캐시도 남겨두어 재마운트 시 데이터를 재사용
-        // → 말 그대로 “캐시 없음”을 원하시면 0 으로 설정하세요.
-        cacheTime: Infinity,
-    });
-
-
-    const count = isLoading || error != null ? '...' : data?.data.count;
-
+function PostViewCountBadge({ className, viewCount }: { className?: string, viewCount: number }) {
     return <Badge className={className}>
         <span>조회수</span>
-        <span className="mr-0 ml-auto">{count}</span>
+        <span className="mr-0 ml-auto">{viewCount}</span>
     </Badge>
 }
 
@@ -68,6 +22,7 @@ export const PostPage = (props: {
     category: string;
     title: string;
     body: string;
+    viewCount: number;
 }) => {
     const { id, category: defaultCategory, title: defaultTitle, body: defaultBody } = props;
     const [category, setCategory] = useState(defaultCategory);
@@ -123,7 +78,7 @@ export const PostPage = (props: {
                         </h1>
 
                         <div className="flex">
-                            <PostViewCountBadge id={id} className="mr-0 ml-auto w-[75px]" />
+                            <PostViewCountBadge className="mr-0 ml-auto w-[75px]" viewCount={props.viewCount} />
                         </div>
                         <div className="h-[20px]" />
 

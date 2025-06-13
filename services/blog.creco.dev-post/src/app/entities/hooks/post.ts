@@ -1,7 +1,56 @@
-import { useGistList } from '@divops-packages/blog-creco-dev';
-import { useGistItem } from "@divops-packages/blog-creco-dev";
 import { useEffect, useState } from "react";
 import { getMarkdown, Item, parsePost } from '../post';
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+async function get(url: string) {
+    const { data } = await axios.get(url);
+
+    return data;
+}
+
+const GistAPI = {
+    of: ({ category, prefix = '/github-api/api/gist' }: { category: string; prefix?: string }) => ({
+        readList: async () => {
+            if (category == null || category === '' || category === 'undefined') {
+                return [];
+            }
+            const { data } = await get(`${prefix}/${category}/list`);
+            return data.items;
+        },
+        readItem: (id: string) => {
+            return get(`${prefix}/${category}/${id}`);
+        },
+        getList: async () => {
+            const { data } = await get(`${prefix}/category`);
+            return data;
+        },
+    }),
+};
+
+function useGistList(category: string, { prefix } = { prefix: '/github-api/api/gist' }) {
+    const { data } = useQuery(
+        {
+            queryKey: ['API.of().readList', category],
+            queryFn: async () => GistAPI.of({ category, prefix }).readList(),
+            initialData: null,
+        }
+    );
+
+    return data;
+}
+
+function useGistItem(category: string, id: string, { prefix } = { prefix: '/github-api/api/gist' }) {
+    const { data } = useQuery(
+        {
+            queryKey: ['API.of().readItem', category, id],
+            queryFn: async () => GistAPI.of({ category, prefix }).readItem(id),
+            initialData: null,
+        }
+    );
+
+    return data;
+}
 
 export function usePost(id: string) {
     const detailData = useGistItem('blog-post', id, {

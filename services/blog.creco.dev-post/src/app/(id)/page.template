@@ -6,6 +6,7 @@ const category = "$CATEGORY";
 const title = "$TITLE";
 const body = "$BODY";
 const thumbnail = $THUMBNAIL;
+const viewCount = $VIEWCOUNT;
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
@@ -18,5 +19,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function () {
-    return <PostPage id={id} category={category} title={title} body={body} />;
+    return <PostPage id={id} category={category} title={title} body={body} viewCount={viewCount} />;
 }

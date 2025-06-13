@@ -41,6 +41,6 @@ export default function NotFound() {
     }
 
     return (
-        <PostPage id={id} category={''} title={''} body={''} />
+        <PostPage id={id} category={''} title={''} body={''} viewCount={0} />
     );
 }
