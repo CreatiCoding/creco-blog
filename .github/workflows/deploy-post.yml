@@ -26,6 +26,10 @@ jobs:
           yarn dlx tsx ./src/prebuild.ts
           yarn build
         working-directory: ./services/blog.creco.dev-post
+        env:
+          GA4_GOOGLE_PRIVATE_KEY: ${{ secrets.GA4_GOOGLE_PRIVATE_KEY }}
+          GA4_GOOGLE_CLIENT_EMAIL: ${{ secrets.GA4_GOOGLE_CLIENT_EMAIL }}
+
 
       - name: deploy to public storage
         run: |
@@ -44,5 +48,3 @@ jobs:
         working-directory: ./services/blog.creco.dev-post
         env:
           CRECO_STORAGE: ${{ secrets.CRECO_STORAGE }}
-          GA4_GOOGLE_PRIVATE_KEY: ${{ secrets.GA4_GOOGLE_PRIVATE_KEY }}
-          GA4_GOOGLE_CLIENT_EMAIL: ${{ secrets.GA4_GOOGLE_CLIENT_EMAIL }}
