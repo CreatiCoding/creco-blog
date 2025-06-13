@@ -23,7 +23,7 @@ jobs:
 
       - name: yarn build
         run: |
-          yarn dlx tsx ./src/prebuild.ts
+          yarn prebuild
           yarn build
         working-directory: ./services/blog.creco.dev-post
         env:
