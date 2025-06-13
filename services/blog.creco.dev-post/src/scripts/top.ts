@@ -1,14 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env yarn tsx
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
-import axios from "axios";
-import { parsePost } from "./app/entities/post";
-import fs from 'fs';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-const prebuildTargetDir = './src/app/(id)/(prebuild)';
-const pageTempateContent = fs.readFileSync('./src/app/(id)/page.template', 'utf-8');
 
 const GA4_PROPERTY_ID = '456644016';
 const GA4_PROJECT_ID = 'divops-app-divops-kr-api';
@@ -72,8 +66,6 @@ async function getPageViewsPerPage({
 (async () => {
     const { data } = await fetch('https://blog.creco.dev/github-api/api/gist/blog-post/list').then(res => res.json());
 
-    console.log(`총 글 수: ${data.items.length}`);
-
     const list = await getPageViewsPerPage({
         propertyId: GA4_PROPERTY_ID,
         projectId: GA4_PROJECT_ID,
@@ -81,42 +73,24 @@ async function getPageViewsPerPage({
         googlePrivateKey: GA4_GOOGLE_PRIVATE_KEY,
     });
 
+    console.log(`ID\t\t\t\t\t카테고리\t조회수\t제목`);
+
+    let postList = [];
     for (const item of data.items) {
-        const viewCount = list?.find(x => x.id === item.id)?.count ?? 0;
-        const { id } = item;
-        const { data: freshData } = await fetch(`https://blog.creco.dev/github-api/api/gist/blog-post/${id}`).then(res => res.json());
-
-        const { data } = await axios.post("https://blog.creco.dev/api/markdown/render", {
-            markdown: freshData.body.contents,
+        const id = item.id;
+        const [category, title] = item.body.contents.split('\n').filter((x: string) => x !== '');
+        const viewCount = list?.find(x => x.id === id)?.count ?? 0;
+        postList.push({
+            id,
+            category,
+            title,
+            viewCount,
         });
-        freshData.body.markdown = data.data;
+    }
 
-        const parsed = parsePost(freshData!);
+    postList.sort((a, b) => b.viewCount - a.viewCount);
 
-        if (parsed == null) {
-            continue;
-        }
-
-        const { category, title, body, thumbnail } = parsed;
-
-        console.log({
-            id: item.id,
-            제목: `[${category}] ${title}`,
-            조회수: viewCount,
-        })
-
-        let pageContent = pageTempateContent.replaceAll('$ID', id);
-        pageContent = pageContent.replaceAll('$CATEGORY', category.replaceAll('"', '\\"'));
-        pageContent = pageContent.replaceAll('$TITLE', title.replaceAll('"', '\\"'));
-        pageContent = pageContent.replaceAll('$BODY', body.replaceAll('"', '\\"'));
-        pageContent = pageContent.replaceAll('$THUMBNAIL', thumbnail == null ? 'undefined' : `"${thumbnail.replaceAll("\"", "\\\"")}"`);
-        pageContent = pageContent.replaceAll('$VIEWCOUNT', viewCount.toString());
-
-        if (fs.existsSync(`${prebuildTargetDir}/${id}`)) {
-            fs.rmSync(`${prebuildTargetDir}/${id}`, { recursive: true });
-        }
-
-        fs.mkdirSync(`${prebuildTargetDir}/${id}`, { recursive: true });
-        fs.writeFileSync(`${prebuildTargetDir}/${id}/page.tsx`, pageContent);
+    for (const { id, category, title, viewCount } of postList) {
+        console.log(`${id}\t${category}\t\t${viewCount}\t${title}`);
     }
 })();
