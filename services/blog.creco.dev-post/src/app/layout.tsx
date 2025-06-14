@@ -24,11 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
-
-
-
   return (
     <html lang="ko">
       <body
@@ -38,22 +33,17 @@ export default function RootLayout({
           {children}
         </Provider>
       </body>
-      {
-        typeof window !== 'undefined' && window.location.host === 'blog.creco.dev' ? (
-          <>
-            <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4M82715ZRX"></Script>
-            <Script type="text/javascript" children={`
-              window.dataLayer = window.dataLayer || [];
-              function gtag() {
-                dataLayer.push(arguments); 
-              }
-              gtag('js', new Date());
-
-              gtag('config', 'G-4M82715ZRX');
-            `} />
-          </>
-        ) : null
-      }
+      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4M82715ZRX"></Script>
+      <Script type="text/javascript" children={`
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments); 
+        }
+        if (window.location.host === 'blog.creco.dev') {
+          gtag('js', new Date());
+          gtag('config', 'G-4M82715ZRX');
+        }
+      `} />
     </html >
   );
 }
