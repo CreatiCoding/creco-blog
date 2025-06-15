@@ -1,2 +1,12 @@
 #!/usr/bin/env bash
-./src/scripts/top.ts
+
+curl -s https://app.divops.kr/api/blog/stats \
+  | jq -r '
+      # 헤더 순서를 ID, 카테고리, 조회수, 제목 으로 변경
+      (["ID","카테고리","조회수","제목"]),
+      # 각 아이템도 동일한 순서로 배열 생성 (.viewCount를 세 번째 요소로)
+      (.[] | [.id, .category, (.viewCount|tostring), .title])
+      # 탭 구분 문자열로 변환
+      | @tsv
+    ' \
+  | column -t -s $'\t'

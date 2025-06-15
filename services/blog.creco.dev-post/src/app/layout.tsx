@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from "./components/Provider";
-import Script from "next/script";
+import { ClientAnalytics } from "./components/ClientAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,17 +33,7 @@ export default function RootLayout({
           {children}
         </Provider>
       </body>
-      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4M82715ZRX"></Script>
-      <Script type="text/javascript" children={`
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments); 
-        }
-        if (window.location.host === 'blog.creco.dev') {
-          gtag('js', new Date());
-          gtag('config', 'G-4M82715ZRX');
-        }
-      `} />
+      <ClientAnalytics projectId="G-4M82715ZRX" />
     </html >
   );
 }
