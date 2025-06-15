@@ -26,7 +26,10 @@ export function StatsPage() {
             </thead>
             <tbody className="text-sm text-gray-500 border-b border-gray-300">
                 {stats?.map(stat => (
-                    <tr key={stat.id} className="border-b border-gray-300 cursor-pointer hover:bg-gray-50">
+                    <tr key={stat.id} className="border-b border-gray-300 cursor-pointer hover:bg-gray-50"
+                        onClick={() => {
+                            window.open(`/post/${stat.id}`, '_self');
+                        }}>
                         <td className="text-[14px] text-left px-4 py-2">{stat.id}</td>
                         <td className="text-[14px] text-left px-4 py-2">{stat.category}</td>
                         <td className="text-[14px] text-left px-4 py-2">{stat.viewCount}</td>
