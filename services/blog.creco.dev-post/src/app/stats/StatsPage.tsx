@@ -18,10 +18,9 @@ export function StatsPage() {
         <table className="w-full border-collapse border border-gray-300 flex-grow overflow-y-auto">
             <thead className="bg-gray-100 text-gray-700 text-sm font-semibold sticky top-0">
                 <tr className="border-b border-gray-300 text-left">
-                    <th className="text-[14px] text-left px-4 py-2">ID</th>
                     <th className="text-[14px] text-left px-4 py-2">Category</th>
-                    <th className="text-[14px] text-left px-4 py-2">View Count</th>
                     <th className="text-[14px] text-left px-4 py-2">Title</th>
+                    <th className="text-[14px] text-left px-4 py-2">View Count</th>
                 </tr>
             </thead>
             <tbody className="text-sm text-gray-500 border-b border-gray-300">
@@ -30,10 +29,9 @@ export function StatsPage() {
                         onClick={() => {
                             window.open(`/post/${stat.id}`, '_self');
                         }}>
-                        <td className="text-[14px] text-left px-4 py-2">{stat.id}</td>
                         <td className="text-[14px] text-left px-4 py-2">{stat.category}</td>
-                        <td className="text-[14px] text-left px-4 py-2">{stat.viewCount}</td>
                         <td className="text-[14px] text-left px-4 py-2">{stat.title}</td>
+                        <td className="text-[14px] text-left px-4 py-2">{stat.viewCount}</td>
                     </tr>
                 ))}
             </tbody>
