@@ -15,6 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
         openGraph: {
             images: thumbnail ? [thumbnail] : [],
         },
+        alternates: {
+            canonical: `/posts/${id}`,
+        },
     }
 }
 
