@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
             images: thumbnail ? [thumbnail] : [],
         },
         alternates: {
-            canonical: `/posts/${id}`,
+            canonical: `https://blog.creco.dev/post/${id}`,
         },
     }
 }
