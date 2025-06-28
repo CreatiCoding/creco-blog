@@ -53,6 +53,10 @@
     padding: 4px;
 }
 
+.post pre code {
+    background: unset;
+}
+
 .post {
     h1 {
         font-size: 3.6rem;
