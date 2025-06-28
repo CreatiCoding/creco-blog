@@ -4,7 +4,7 @@ import { PostPage } from "../../PostPage";
 const id = "$ID";
 const category = "$CATEGORY";
 const title = "$TITLE";
-const body = "$BODY";
+const body = `$BODY`;
 const thumbnail = $THUMBNAIL;
 const viewCount = $VIEWCOUNT;
 

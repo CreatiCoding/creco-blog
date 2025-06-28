@@ -40,7 +40,7 @@ const pageTempateContent = fs.readFileSync('./src/app/(id)/page.template', 'utf-
         let pageContent = pageTempateContent.replaceAll('$ID', id);
         pageContent = pageContent.replaceAll('$CATEGORY', category.replaceAll('"', '\\"'));
         pageContent = pageContent.replaceAll('$TITLE', title.replaceAll('"', '\\"'));
-        pageContent = pageContent.replaceAll('$BODY', body.replaceAll('"', '\\"'));
+        pageContent = pageContent.replaceAll('$BODY', body.replaceAll('`', '\`'));
         pageContent = pageContent.replaceAll('$THUMBNAIL', thumbnail == null ? 'undefined' : `"${thumbnail.replaceAll("\"", "\\\"")}"`);
         pageContent = pageContent.replaceAll('$VIEWCOUNT', viewCount.toString());
 
