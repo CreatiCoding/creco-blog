@@ -57,13 +57,13 @@ export const PostPage = (props: {
             {/* 데스크탑 전용 컨테이너 */}
             <div className="desktop-ui flex justify-center bg-[#232323] min-h-screen text-[#DEDEDD] text-base">
                 <div className="bg-[#2B2B29] max-w-[1200px] w-full py-[16px] px-[20px] shadow-[0_0_4px_20px_#2B2B29] text-base">
-                    <div className="max-w-[840px] mx-auto">
+                    <main className="max-w-[840px] mx-auto">
                         {/* 상단 로고 */}
-                        <div className="py-[24px]">
+                        <section className="py-[24px]">
                             <Link href="/" className="hover:text-white">
                                 <h1 className="text-[3.6rem] font-extrabold">Creco&apos;s Blog</h1>
                             </Link>
-                        </div>
+                        </section>
 
                         {/* 여백 */}
                         <div className="h-[20px]" />
@@ -106,7 +106,7 @@ export const PostPage = (props: {
                             loading="lazy"
                             strict='0'
                         />
-                    </div>
+                    </main>
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@ export const PostPage = (props: {
 
 const Post = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
     return (
-        <div
+        <article
             {...props}
             className={className}
             style={{
