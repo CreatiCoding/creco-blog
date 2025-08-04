@@ -10,8 +10,8 @@ const viewCount = $VIEWCOUNT;
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
-        title: title,
-        description: body ? body.split('').slice(0, 500).join('') : undefined,
+        title: title.replace(/<[^>]*>/g, ''),
+        description: body ? body.split('').slice(0, 500).join('').replace(/<[^>]*>/g, '') : undefined,
         openGraph: {
             images: thumbnail ? [thumbnail] : [],
         },

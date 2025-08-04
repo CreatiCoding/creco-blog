@@ -42,7 +42,9 @@ export const PostsPage = () => {
 
             {/* 게시글 목록 */}
             <ul>
-              {posts.map((post) => (
+              {posts
+                .filter((post) => post != null)
+                .map((post) => (
                 <li key={post.id} className="w-full border-b border-gray-200/50 py-12">
                   <a
                     href={`/post/${post.id}/`}
